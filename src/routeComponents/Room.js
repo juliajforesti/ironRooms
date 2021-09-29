@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import ReviewCard from "../components/ReviewCard";
 import ReviewForm from "../components/ReviewForm";
 import api from "../configs/api";
 
 const Room = (props) => {
     const {roomId} = props.match.params
+    
     const [reviews, setReviews] = useState([]);
     const [room, setroom] = useState();
     const [loading, setLoading] = useState(true);
@@ -13,6 +13,10 @@ const Room = (props) => {
     const toggleForm = () => {
         setShowForm(!showForm);
     };
+
+    const updateReviews = (newComment) => {
+        setReviews([...reviews, newComment])
+    }
 
     useEffect(() => {
         (async () => {
@@ -23,12 +27,12 @@ const Room = (props) => {
                 const reviewsResult = await api.get(
                     `/review/${roomId}`
                 );
-                console.log(reviewsResult)
                 setroom({ ...roomResult.data });
                 setReviews([...reviewsResult.data]);
-                setLoading(false);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         })();
     }, []);
@@ -41,15 +45,17 @@ const Room = (props) => {
                     <div>
                         <h2 className="py-3">{room.name}</h2>
                         <p>{room.description}</p>
-                        <img src={room.imageUrl} alt="" />
+                        <img className='w-75' src={room.imageUrl} alt="" />
                     </div>
-                    <div className="overflow-scroll w-50">
+                    <div className="overflow-scroll w-50 mt-4">
                         <h6>Reviews:</h6>
                         {reviews.map((review) => (
-                            <ReviewCard key={review._id} review={review} />
+                            <div key={review._id} className="card m-1 p-1">
+                                <h4>{review.comment}</h4>
+                            </div>
                         ))}
-                        {!showForm ? (
-                            <ReviewForm toggleForm={toggleForm} roomId={roomId} />
+                        {showForm ? (
+                            <ReviewForm toggleForm={toggleForm} roomId={roomId} updateReviews={updateReviews} />
                         ) : (
                             <button
                                 onClick={toggleForm}

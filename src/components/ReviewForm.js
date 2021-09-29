@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import api from "../configs/api";
 
-const ReviewForm = ({ toggleForm, roomId }) => {
+const ReviewForm = ({ toggleForm, roomId , updateReviews}) => {
     const [comment, setComment] = useState("");
+    const [error, setError] = useState('');
 
     const handleSubmit = async(e) => {
         e.preventDefault()
         try {
-            const result = await api.post(`/review${roomId}`, {comment})
+            const result = await api.post(`/review/${roomId}`, {comment})
             console.log(result)
+            updateReviews(result.data)
+            setComment('')
         } catch (error) {
-            console.error(error)
+            console.error(error.response)
+            setError(error.response.data.message)
         }
     }
 
@@ -21,7 +25,7 @@ const ReviewForm = ({ toggleForm, roomId }) => {
                 value={comment}
                 onChange={({ target: { value } }) => setComment(value)}
             />
-            <div className="d-flex justify-content-between mt-1">
+            <div className="d-flex justify-content-between mt-2">
                 <button onClick={toggleForm} className="btn btn-dark">
                     Cancelar
                 </button>
@@ -29,6 +33,7 @@ const ReviewForm = ({ toggleForm, roomId }) => {
                     Enviar
                 </button>
             </div>
+            {error && (<p className='badge bg-danger mt-5'>{error}</p>)}
         </form>
     );
 };

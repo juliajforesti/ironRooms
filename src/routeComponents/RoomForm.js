@@ -10,6 +10,7 @@ const FORM_VALUES = {
 
 const RoomForm = (props) => {
     const roomId = props.match.params.roomId || undefined
+
     const [formValues, setFormValues] = useState({ ...FORM_VALUES });
     const history = useHistory()
 
@@ -20,7 +21,7 @@ const RoomForm = (props) => {
                     const result = await api.get(`/room/${roomId}`)
                     setFormValues({...result.data})
                 } catch (error) {
-                    
+                    console.error(error)
                 }
             })()
         }
@@ -38,16 +39,16 @@ const RoomForm = (props) => {
             } else {
                 await api.post('/room', formValues)
             }
-            history.push('/home')
+            history.push('/')
         } catch (error) {
             console.error(error)
         }
     }
     return (
-        <form className="d-flex flex-column align-items-center pt-5" onSubmit={handleSubmit}>
+        <form className="d-flex flex-column align-items-center pt-5 text-light fw-bold" onSubmit={handleSubmit}>
             <label>Nome:</label>
             <input
-                className="form-control w-50"
+                className="form-control w-50 mb-3"
                 type="text"
                 value={formValues.name}
                 name="name"
@@ -55,8 +56,8 @@ const RoomForm = (props) => {
             />
 
             <label>Descrição:</label>
-            <input
-                className="form-control w-50"
+            <textarea
+                className="form-control w-50 mb-3"
                 type="text"
                 value={formValues.description}
                 name="description"
@@ -65,14 +66,14 @@ const RoomForm = (props) => {
 
             <label>Imagem (link):</label>
             <input
-                className="form-control w-50"
+                className="form-control w-50 mb=3"
                 type="text"
                 value={formValues.imageUrl}
                 name="imageUrl"
                 onChange={({target: {name, value}}) => handleChange(name, value)}
             />
 
-            <button type="submit">Salvar</button>
+            <button className='btn btn-dark my-3' type="submit">Salvar</button>
         </form>
     );
 };

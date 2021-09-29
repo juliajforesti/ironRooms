@@ -1,0 +1,28 @@
+1. configs / api.js
+
+2. Signup - AuthForm
+
+3. Login - AuthForm
+
+4. Home
+
+5. PrivateRoutes
+
+6. Room details
+
+7. Reviews do Room
+
+8. adicionar Review
+
+9. Criar sala -RoomForm
+
+10. editar sala - RoomForm 
+
+11. permitir edição somente ao dono
+
+----------------------------------------
+12. deletar sala (dono)
+
+13. deletar/editar review (dono)
+
+14. logout
