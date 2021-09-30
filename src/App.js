@@ -11,7 +11,7 @@ import Logout from './routeComponents/Logout';
 
 function App() {
   return (
-    <div className="App bg-secondary vh-100">
+    <div className="App bg-secondary" style={{minHeight: "100vh"}}>
         <PrivateRoute>
           <Navbar />
           <Route exact path='/' render={(props) => <Home {...props} />} />
